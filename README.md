@@ -1,47 +1,79 @@
-# okta-maui-sample-app
-A MAUI sample application that uses Okta for authentication
+# How to Add Authentication to .NET MAUI Apps
+
+This repo is a .NET MAUI application that uses Okta for authentication. It uses Okta's redirect model to sign in and displays your profile information.
+
+Please read [How to Add Authentication to .NET MAUI Apps][blog] to see how it was created.
+
+**Prerequisites:**
+
+* Windows 11 OS build 22000.1696
+* [Visual Studio 2022 Version 17.4.5](https://visualstudio.microsoft.com/vs/)
+* [.NET 7](https://dotnet.microsoft.com/en-us/download/dotnet/7.0)
+* [Okta CLI](https://cli.okta.com)
+* [Okta](https://developer.okta.com/) 
+  > Okta has Authentication and User Management APIs that reduce development time with instant-on, scalable user infrastructure.
+
+----
+
+* [Getting Started](#getting-started)
+* [Links](#links)
+* [Help](#help)
+* [License](#license)
 
 ## Getting Started
 
-1. Create an Okta account, also know as an _organization_, see [Developer Signup](https://developer.okta.com/signup/).
-2. In your `Okta Developer Console` add an application; follow the directions at [Set up your Application](https://developer.okta.com/docs/guides/implement-auth-code-pkce/setup-app/) and accept the defaults.
-3. In your `Okta Developer Console` register your application's login and logout redirect callbacks, see [Register Redirects](#register-redirects).
-4. Configure your application to use the values registered in the previous step, see [Configure Your Application](#configure-your-application)
-5. Go to Visual Studio (I used VS 2022 Community Edition) and update the `OktaClientConfiguration` settings with your application details in the `MauiProgram.cs`:
+Clone or download the sample. You can download the files as a zip file. To clone the repo follow the instructions below:
 
-```csharp
-var oktaClientConfiguration = new Okta.OktaClientConfiguration()
-        {
-            // Use "https://myOktaDomain.com/oauth2/default" for the "default" authorization server, or
-            // "https://myOktaDomain.com/oauth2/<MyCustomAuthorizationServerId>"
-            OktaDomain = "https://myOktaDomain.com", 
-            ClientId = "<MyClientId>",
-            RedirectUri = "myapp://callback",
-            Browser = new WebBrowserAuthenticator()
-        };
-
+```bash
+git clone https://github.com/oktadev/okta-net-maui-example.git
+cd okta-net-maui-example
 ```
 
-6. Start an Android emulator of your choice.
+Open the project in Visual Studio 2022 and restore Nuget packages.
+
+### Create an OIDC Application in Okta
+
+Create a free developer account with the following command using the [Okta CLI](https://cli.okta.com):
+
+```shell
+okta register
+```
+
+If you already have a developer account, use `okta login` to integrate it with the Okta CLI. 
+Create a client application in Okta with the following command:
+
+```shell
+okta apps create
+```
+
+You will be prompted to select the following options:
+- Application name: okta-maui-sample-app
+- Type of Application: **3: Native App (mobile)**
+- Callback: `myapp://callback`
+- Post Logout Redirect URI: `myapp://callback`
+
+The application configuration will be printed in the terminal. You will see output like the following when it's finished:
+
+```console
+Okta application configuration:
+Issuer:    https://{yourOktaDomain}/oauth2/default
+Client ID: {yourClientID}
+```
+
+Replace all instances of {yourOktaDomain} and {yourClientID} in the project.
+
+## Run the app
+
+In Visual Studio 2022, start an Android emulator of your choice.
 
 > Note: This sample **only** implements the Android platform. You can go ahead and add the bits corresponding to the platform you want to try.
 
-### Register Redirects
+## Help
 
-To register redirect URIs do the following:
+Please post any questions as comments on the [blog post][blog], or visit our [Okta Developer Forums](https://devforum.okta.com/).
 
-1. Sign in to your `Okta Developer Console` as an administrator.
-2. Click the `Applications` tab and select your application.  If you need to set up your application see [Set up your Application](https://developer.okta.com/docs/guides/implement-auth-code-pkce/setup-app/). 
-3. Ensure you are on the `General` tab, then go to `General Settings` and click `Edit`.
-4. Go to the `Login` section.
-5. Below `Login redirect URIs` click the `Add URI` button.
-6. Enter a value appropriate for your application, this example uses the following:
-    ```
-    myApp://callback
-    ```
-7. Below `Logout redirect URIs` click the `Add URI` button.
-8. Enter a value appropriate for your application, this example uses the following:
-    ```
-    myapp://callback
-    ```
-9. Click `Save`.
+## License
+
+Apache 2.0, see [LICENSE](LICENSE).
+
+[blog]: https://developer.okta.com/blog/2023/06/21/net-maui-authentication

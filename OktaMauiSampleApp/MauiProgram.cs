@@ -24,8 +24,8 @@ public static class MauiProgram
 
         var oktaClientConfiguration = new Okta.OktaClientConfiguration()
         {
-            OktaDomain = "https://myOktaDomain.com",
-            ClientId = "foo",
+            OktaDomain = "https://{yourOktaDomain}/oauth2/default"
+            ClientId = "{yourClientID}",
             RedirectUri = "myapp://callback",
             Browser = new WebBrowserAuthenticator()
         };
